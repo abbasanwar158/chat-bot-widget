@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     flex-direction: column;
   }
   #chat-popup {
-    height: 70vh;
-    max-height: 70vh;
+    height: 75vh;
+    max-height: 75vh;
     transition: all 0.3s;
     overflow: hidden;
   }
@@ -460,28 +460,30 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function apiCall(message){
+    const scriptTag = document.querySelector('script[src*="chat-widget.js"]');
+    const apiUrl = scriptTag.getAttribute('data-api-url');
     chatSubmit.disabled = true;
     chatSubmit.classList.add('disabled');
-    reply('fsdajfkasdk flasdlfkjasdlk  falsdjfklasdjlf lkfjasdkljfa flaskdjlfkjaskld fklasdjklfjklasjd')
-    // replyLoader()
-    // var xhr = new XMLHttpRequest();
-    // xhr.open("POST", "https://ai-backend.xstack.tech" + "/chat_with_website", true);
-    // xhr.setRequestHeader("Content-Type", "application/json");
+    replyLoader()
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", apiUrl, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
 
-    // var requestBody = JSON.stringify({
-    //   message: message
-    // });
+    var requestBody = JSON.stringify({
+      message: message
+    });
 
-    // xhr.onreadystatechange = function () {
-    //   if (xhr.readyState === 4) {
-    //     if (xhr.status === 200) {
-    //       document.getElementById('reply-loader').remove()
-    //       reply(xhr.responseText)
-    //     } else {
-    //       document.getElementById('reply-loader').remove()
-    //     }
-    //   }
-    // };
-    // xhr.send(requestBody);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          document.getElementById('reply-loader').remove()
+          reply(xhr.responseText)
+        } else {
+          document.getElementById('reply-loader').remove()
+        }
+      }
+    };
+    xhr.send(requestBody);
   }
 });
+
